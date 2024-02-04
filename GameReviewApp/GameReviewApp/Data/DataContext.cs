@@ -21,7 +21,8 @@ namespace GameReviewApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // primary keys
-
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
             modelBuilder.Entity<Category>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Game>()

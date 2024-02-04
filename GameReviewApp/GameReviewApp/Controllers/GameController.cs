@@ -2,6 +2,7 @@
 using GameReviewApp.Dto;
 using GameReviewApp.Interfaces;
 using GameReviewApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ namespace GameReviewApp.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Game>))]
         public IActionResult GetGames()
         {
