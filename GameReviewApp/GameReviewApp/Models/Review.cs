@@ -3,6 +3,8 @@
     public class Review
     {
         public int Id { get; set; }
+        public int GameId { get; set; }
+        public int ReviewerId {  get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
 

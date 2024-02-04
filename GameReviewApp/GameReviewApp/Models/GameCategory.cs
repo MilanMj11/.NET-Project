@@ -2,8 +2,8 @@
 {
     public class GameCategory
     {
-        public int GameID { get; set; }
-        public int CategoryID { get; set; }
+        public int GameId { get; set; }
+        public int CategoryId { get; set; }
 
         public Game Game { get; set; }
 
