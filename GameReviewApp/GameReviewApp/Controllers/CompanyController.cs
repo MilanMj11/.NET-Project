@@ -5,6 +5,7 @@ using GameReviewApp.Models;
 using GameReviewApp.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.Design;
 
 namespace GameReviewApp.Controllers
 {
@@ -32,5 +33,38 @@ namespace GameReviewApp.Controllers
             }
             return Ok(companies);
         }
+
+        [HttpGet("{companyId}")]
+        [ProducesResponseType(200, Type = typeof(Company))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCompany(int companyId)
+        {
+            if (!_companyRepository.CompanyExists(companyId))
+                return NotFound();
+
+            var company = _mapper.Map<CompanyDto>(_companyRepository.GetCompany(companyId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(company);
+        }
+
+        [HttpGet("game/{companyId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Game>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetGamesByCompanyId(int companyId)
+        {
+            if (!_companyRepository.CompanyExists(companyId))
+                return NotFound();
+
+            var games = _mapper.Map<List<GameDto>>(_companyRepository.GetGamesByCompanyId(companyId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(games);
+        }
+
     }
 }

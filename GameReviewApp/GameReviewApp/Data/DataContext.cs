@@ -16,6 +16,7 @@ namespace GameReviewApp.Data
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Reviewer> Reviewers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

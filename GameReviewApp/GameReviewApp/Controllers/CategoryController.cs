@@ -54,6 +54,9 @@ namespace GameReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetGamesByCategoryId(int categoryId)
         {
+            if (!_categoryRepository.CategoryExists(categoryId))
+                return NotFound();
+
             var games = _mapper.Map<List<GameDto>>(_categoryRepository.GetGamesByCategory(categoryId));
 
             if(!ModelState.IsValid)

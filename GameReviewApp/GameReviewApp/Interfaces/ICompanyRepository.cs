@@ -6,7 +6,7 @@ namespace GameReviewApp.Interfaces
     {
         ICollection<Company> GetCompanies();
         Company GetCompany(int id);
-        ICollection<Game> GetGamesByCompany(int companyId);
+        ICollection<Game> GetGamesByCompanyId(int companyId);
         bool CompanyExists(int id);
 
     }

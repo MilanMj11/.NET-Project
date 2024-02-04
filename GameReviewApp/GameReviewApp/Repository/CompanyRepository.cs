@@ -28,7 +28,7 @@ namespace GameReviewApp.Repository
             return _context.Companies.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public ICollection<Game> GetGamesByCompany(int companyId)
+        public ICollection<Game> GetGamesByCompanyId(int companyId)
         {
             return _context.Games.Where(c => c.CompanyId == companyId).ToList();
         }
