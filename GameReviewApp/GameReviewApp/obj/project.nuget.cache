@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "gvVrV6DPVp02TvFE4VLBgwavAWmz9CHablTBn+ogYSPS5LfV0HygAv25ZDx1xKStLOSmbQQoFeplF3WGltMnpA==",
+  "dgSpecHash": "gJS6V5SC+Lnh0PfqME+TciWFrYnW78m8vKS+PT8i77vNJVmwHtPFK3V8+X7bHyWs4QkZKIglII2Y1zBRGTvYtA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Milan\\Desktop\\Proiect .NET\\GameReviewApp\\GameReviewApp\\GameReviewApp.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Milan\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
+    "C:\\Users\\Milan\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\Milan\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\Milan\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\Milan\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Milan\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\Milan\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\Milan\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.1\\microsoft.entityframeworkcore.6.0.1.nupkg.sha512",
