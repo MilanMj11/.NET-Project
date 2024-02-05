@@ -18,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>(); 
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

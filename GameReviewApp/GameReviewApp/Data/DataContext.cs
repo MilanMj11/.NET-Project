@@ -43,6 +43,13 @@ namespace GameReviewApp.Data
                 .WithOne(p => p.Reviewer)
                 .HasForeignKey<Profile>(p => p.ReviewerId);
 
+            // one to one ( User <-> Profile )
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Profile)
+                .WithOne(p => p.User)
+                .HasForeignKey<Profile>(p => p.UserId);
+
             // one to many ( Company <-> Game )
 
             modelBuilder.Entity<Company>()

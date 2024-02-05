@@ -1,4 +1,5 @@
 ﻿using GameReviewApp.Dto;
+using GameReviewApp.Interfaces;
 using GameReviewApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,27 +15,49 @@ namespace GameReviewApp.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
         private readonly IConfiguration _configuration;
+        private readonly IUserRepository _userRepository;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration,IUserRepository userRepository)
         {
             _configuration = configuration;
+            _userRepository = userRepository;
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDto request)
+        [HttpPost("{role}/register")]
+        public async Task<ActionResult<User>> Register(UserDto request, string role)
         {
+            bool exists = _userRepository.UserExistsByUsername(request.Username);
+            if(exists == true)
+            {
+                return BadRequest("Username already exists.");
+            }
+
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.Username = request.Username;
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            var user = new User()
+            {
+                Username = request.Username,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Rol = RolType.User
+            };
+
+            if(role.ToLower() == "admin")
+            {
+                user.Rol = RolType.Admin;
+            }
+
+
+            if (!_userRepository.CreateUser(user))
+            {
+                return BadRequest("Error at creating user.");
+            }
 
             return Ok(user);
         }
 
-        [HttpPost("login")]
+        /*[HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
             if(user.Username != request.Username)
@@ -50,7 +73,7 @@ namespace GameReviewApp.Controllers
             string token = CreateToken(user);
 
             return Ok(token);
-        }
+        }*/
 
         private string CreateToken(User user)
         {
@@ -58,6 +81,15 @@ namespace GameReviewApp.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username)
             };
+
+            if(user.Rol == RolType.Admin)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
+            if (user.Rol == RolType.User)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "User"));
+            }
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Token").Value));
