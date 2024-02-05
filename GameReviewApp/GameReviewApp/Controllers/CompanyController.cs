@@ -3,6 +3,7 @@ using GameReviewApp.Dto;
 using GameReviewApp.Interfaces;
 using GameReviewApp.Models;
 using GameReviewApp.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.Design;
@@ -15,11 +16,13 @@ namespace GameReviewApp.Controllers
     {
         private readonly ICompanyRepository _companyRepository;
         private readonly IMapper _mapper;
+        private readonly IGameRepository _gameRepository;
 
-        public CompanyController(ICompanyRepository companyRepository,IMapper mapper)
+        public CompanyController(ICompanyRepository companyRepository,IMapper mapper, IGameRepository gameRepository)
         {
             _companyRepository = companyRepository;
             _mapper = mapper;
+            _gameRepository = gameRepository;
         }
 
         [HttpGet]
@@ -65,6 +68,84 @@ namespace GameReviewApp.Controllers
 
             return Ok(games);
         }
+
+        [HttpPost, Authorize(Roles = "Admin")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCompany([FromBody] CompanyDto companyCreate)
+        {
+            if (companyCreate == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var company = _mapper.Map<Company>(companyCreate);
+
+            if (!_companyRepository.CreateCompany(company))
+                return BadRequest("Cannot create company.");
+
+            return Ok("Company successfully created.");
+        }
+
+        [HttpPut("{companyId}"), Authorize(Roles = "Admin")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCompany(int companyId,[FromBody] CompanyDto companyUpdate)
+        {
+            if(companyUpdate == null)
+                return BadRequest(ModelState);
+
+            if (!_companyRepository.CompanyExists(companyId))
+                return BadRequest("Company does not exist.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var company = _mapper.Map<Company>(companyUpdate);
+            company.Id = companyId;
+
+            if (!_companyRepository.UpdateCompany(companyId,company))
+            {
+                ModelState.AddModelError("", "Error updating company.");
+                return StatusCode(500, ModelState);
+            }
+
+
+            return Ok("Company successfully updated.");
+        }
+
+        [HttpDelete("{companyId}"), Authorize(Roles = "Admin")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCompany(int companyId)
+        {
+            if (!_companyRepository.CompanyExists(companyId))
+                return NotFound();
+
+            var games = _companyRepository.GetGamesByCompanyId(companyId).ToList();
+            var company = _companyRepository.GetCompany(companyId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_gameRepository.DeleteGames(games))
+            {
+                ModelState.AddModelError("", "Error deleting games.");
+                return StatusCode(500, ModelState);
+            }
+
+            if (!_companyRepository.DeleteCompany(company))
+            {
+                ModelState.AddModelError("", "Error deleting company.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Company successfully deleted.");
+        }
+
 
     }
 }

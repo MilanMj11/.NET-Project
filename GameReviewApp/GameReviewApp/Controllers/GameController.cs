@@ -65,5 +65,24 @@ namespace GameReviewApp.Controllers
             return Ok(rating);
         }
 
+        [HttpPost, Authorize(Roles = "Admin")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateGame([FromQuery] int categoryId, [FromQuery] int companyId, [FromBody] GameDto gameCreate)
+        {
+            if (gameCreate == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var game = _mapper.Map<Game>(gameCreate);
+
+            if (!_gameRepository.CreateGame(categoryId, companyId, game))
+                return BadRequest("Cannot create game.");
+
+            return Ok("Game successfully created.");
+        }
+
     }
 }

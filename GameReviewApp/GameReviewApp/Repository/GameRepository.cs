@@ -41,5 +41,55 @@ namespace GameReviewApp.Repository
         {
             return _context.Games.OrderBy(g => g.Id).ToList();
         }
+
+        bool IGameRepository.CreateGame(int categoryId, int companyId, Game game)
+        {
+            var category = _context.Categories.Where(c => c.Id == categoryId).FirstOrDefault();
+
+            var company = _context.Companies.Where(c => c.Id == companyId).FirstOrDefault();
+            game.CompanyId = companyId;
+            
+            var gameCategory = new GameCategory()
+            {
+                Category = category,
+                Game = game
+            };
+
+            _context.Add(gameCategory);
+            _context.Add(game);
+            return _context.SaveChanges() > 0;
+        }
+
+        bool IGameRepository.DeleteGame(int gameId)
+        {
+            if (!GameExists(gameId))
+            {
+                /// nu exista joc cu acest id;
+                return false;
+            }
+            var game = _context.Games.Where(g => g.Id  == gameId).FirstOrDefault();
+            _context.Remove(game);
+            return _context.SaveChanges() > 0;
+
+        }
+
+        bool IGameRepository.DeleteGames(List<Game> gamelist)
+        {
+            _context.RemoveRange(gamelist);
+            return _context.SaveChanges() > 0;
+        }
+
+        bool IGameRepository.UpdateGame(int gameId)
+        {
+            if (!GameExists(gameId))
+            {
+                /// nu exista joc cu acest id;
+                return false;
+            }
+            var game = _context.Games.Where(g => g.Id == gameId).FirstOrDefault();
+            _context.Update(game);
+            return _context.SaveChanges() > 0;
+
+        }
     }
 }

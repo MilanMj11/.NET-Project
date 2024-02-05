@@ -32,5 +32,25 @@ namespace GameReviewApp.Repository
         {
             return _context.Games.Where(c => c.CompanyId == companyId).ToList();
         }
+
+        bool ICompanyRepository.CreateCompany(Company company)
+        {
+            if (CompanyExists(company.Id))
+                return false;
+            _context.Add(company);
+            return _context.SaveChanges() > 0;
+        }
+
+        bool ICompanyRepository.DeleteCompany(Company company)
+        {
+            _context.Remove(company);
+            return _context.SaveChanges() > 0;
+        }
+
+        bool ICompanyRepository.UpdateCompany(int companyId, Company company)
+        {
+            _context.Update(company);
+            return _context.SaveChanges() > 0;
+        }
     }
 }

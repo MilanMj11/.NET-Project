@@ -9,8 +9,11 @@ namespace GameReviewApp.Helper
         public MappingProfiles()
         {
             CreateMap<Game, GameDto>();
+            CreateMap<GameDto, Game>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryDto, Category>();
             CreateMap<Company, CompanyDto>();
+            CreateMap<CompanyDto, Company>();
         }
     }
 }
