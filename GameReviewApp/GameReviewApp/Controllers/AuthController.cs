@@ -57,13 +57,15 @@ namespace GameReviewApp.Controllers
             return Ok(user);
         }
 
-        /*[HttpPost("login")]
+        [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
-            if(user.Username != request.Username)
+            if (!_userRepository.UserExistsByUsername(request.Username))
             {
-                return BadRequest("User not found.");
+                return BadRequest("User does not exist.");
             }
+
+            var user = _userRepository.GetUserByUsername(request.Username);
 
             if(!VerifyPasswordHash(request.Password,user.PasswordHash,user.PasswordSalt))
             {
@@ -73,7 +75,7 @@ namespace GameReviewApp.Controllers
             string token = CreateToken(user);
 
             return Ok(token);
-        }*/
+        }
 
         private string CreateToken(User user)
         {
