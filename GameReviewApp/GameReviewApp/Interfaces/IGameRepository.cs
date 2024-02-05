@@ -5,14 +5,15 @@ namespace GameReviewApp.Interfaces
     public interface IGameRepository
     {
         ICollection<Game> GetGames();
+        ICollection<Review> GetReviewsByGameId(int gameId);
         Game GetGame(int id);
         Game GetGame(string name);
         decimal GetGameRating(int gameId);
         bool GameExists(int gameId);
 
         bool CreateGame(int categoryId, int companyId, Game game);
-        bool UpdateGame(int gameId);
-        bool DeleteGame(int gameId);
+        bool UpdateGame(Game game);
+        bool DeleteGame(Game game);
         bool DeleteGames(List<Game> gamelist);
 
     }

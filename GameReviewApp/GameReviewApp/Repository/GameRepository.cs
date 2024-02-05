@@ -42,6 +42,11 @@ namespace GameReviewApp.Repository
             return _context.Games.OrderBy(g => g.Id).ToList();
         }
 
+        public ICollection<Review> GetReviewsByGameId(int gameId)
+        {
+            return _context.Reviews.Where(r => r.GameId  == gameId).ToList();
+        }
+
         bool IGameRepository.CreateGame(int categoryId, int companyId, Game game)
         {
             var category = _context.Categories.Where(c => c.Id == categoryId).FirstOrDefault();
@@ -60,14 +65,8 @@ namespace GameReviewApp.Repository
             return _context.SaveChanges() > 0;
         }
 
-        bool IGameRepository.DeleteGame(int gameId)
+        bool IGameRepository.DeleteGame(Game game)
         {
-            if (!GameExists(gameId))
-            {
-                /// nu exista joc cu acest id;
-                return false;
-            }
-            var game = _context.Games.Where(g => g.Id  == gameId).FirstOrDefault();
             _context.Remove(game);
             return _context.SaveChanges() > 0;
 
@@ -79,14 +78,8 @@ namespace GameReviewApp.Repository
             return _context.SaveChanges() > 0;
         }
 
-        bool IGameRepository.UpdateGame(int gameId)
+        bool IGameRepository.UpdateGame(Game game)
         {
-            if (!GameExists(gameId))
-            {
-                /// nu exista joc cu acest id;
-                return false;
-            }
-            var game = _context.Games.Where(g => g.Id == gameId).FirstOrDefault();
             _context.Update(game);
             return _context.SaveChanges() > 0;
 

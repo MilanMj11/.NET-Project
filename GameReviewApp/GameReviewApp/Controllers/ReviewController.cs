@@ -84,7 +84,10 @@ namespace GameReviewApp.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var review = _mapper.Map<Review>(reviewUpdate);
+            var review = _reviewRepository.GetReview(reviewId);
+            review.Rating = reviewUpdate.Rating;
+            review.Title = reviewUpdate.Title;
+            review.Text = reviewUpdate.Text;
 
             if (!_reviewRepository.UpdateReview(review))
             {

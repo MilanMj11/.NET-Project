@@ -100,8 +100,9 @@ namespace GameReviewApp.Controllers
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var reviewer = _mapper.Map<Reviewer>(reviewerUpdate);
-            reviewer.Id = reviewerId;
+            var reviewer = _reviewerRepository.GetReviewer(reviewerId);
+            reviewer.FirstName = reviewerUpdate.FirstName;
+            reviewer.LastName = reviewerUpdate.LastName;
 
             if (!_reviewerRepository.UpdateReviewer(reviewer))
             {
@@ -125,11 +126,13 @@ namespace GameReviewApp.Controllers
             var reviewer = _reviewerRepository.GetReviewer(reviewerId);
             var reviews = _reviewerRepository.GetReviewsByReviewer(reviewerId).ToList();
 
-            if (!_reviewRepository.DeleteReviews(reviews))
-            {
-                ModelState.AddModelError("", "Error deleting reviews.");
-                return StatusCode(500, ModelState);
-            }
+
+            if(reviews.Count > 0)
+                if (!_reviewRepository.DeleteReviews(reviews))
+                {
+                    ModelState.AddModelError("", "Error deleting reviews.");
+                    return StatusCode(500, ModelState);
+                }
 
             if (!_reviewerRepository.DeleteReviewer(reviewer))
             {

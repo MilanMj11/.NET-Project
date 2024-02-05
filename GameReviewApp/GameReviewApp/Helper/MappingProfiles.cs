@@ -22,6 +22,9 @@ namespace GameReviewApp.Helper
 
             CreateMap<Review, ReviewDto>();
             CreateMap<ReviewDto, Review>();
+
+            CreateMap<Models.Profile, ProfileDto>();
+            CreateMap<ProfileDto, Models.Profile>();
         }
     }
 }
