@@ -10,10 +10,18 @@ namespace GameReviewApp.Helper
         {
             CreateMap<Game, GameDto>();
             CreateMap<GameDto, Game>();
+
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+
             CreateMap<Company, CompanyDto>();
             CreateMap<CompanyDto, Company>();
+
+            CreateMap<Reviewer, ReviewerDto>();
+            CreateMap<ReviewerDto, Reviewer>();
+
+            CreateMap<Review, ReviewDto>();
+            CreateMap<ReviewDto, Review>();
         }
     }
 }

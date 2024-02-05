@@ -61,7 +61,7 @@ namespace GameReviewApp.Controllers
             var games = _mapper.Map<List<GameDto>>(_categoryRepository.GetGamesByCategory(categoryId));
 
             if(!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
             return Ok(games);
         }
