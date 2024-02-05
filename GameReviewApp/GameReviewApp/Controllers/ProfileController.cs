@@ -3,6 +3,7 @@ using GameReviewApp.Dto;
 using GameReviewApp.Interfaces;
 using GameReviewApp.Models;
 using GameReviewApp.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,7 @@ namespace GameReviewApp.Controllers
             return Ok(profile);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProfile([FromQuery] int userId, [FromQuery] int reviewerId, [FromBody] ProfileDto profileCreate)
@@ -69,7 +70,7 @@ namespace GameReviewApp.Controllers
             return Ok("Profile successfully created.");
         }
 
-        [HttpPut("{reviewId}")]
+        [HttpPut("{reviewId}"), Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -97,7 +98,7 @@ namespace GameReviewApp.Controllers
             return Ok("Profile successfully updated.");
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

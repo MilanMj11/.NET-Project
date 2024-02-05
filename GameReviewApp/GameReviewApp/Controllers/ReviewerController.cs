@@ -2,6 +2,7 @@
 using GameReviewApp.Dto;
 using GameReviewApp.Interfaces;
 using GameReviewApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -84,7 +85,7 @@ namespace GameReviewApp.Controllers
             return Ok("Reviewer successfully created.");
         }
 
-        [HttpPut("{reviewerId}")]
+        [HttpPut("{reviewerId}"), Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -113,7 +114,7 @@ namespace GameReviewApp.Controllers
             return Ok("Reviewer successfully updated.");
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

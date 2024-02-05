@@ -87,7 +87,7 @@ namespace GameReviewApp.Controllers
             return Ok("Game successfully created.");
         }
 
-        [HttpPut("{gameId}")]
+        [HttpPut("{gameId}"), Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -120,7 +120,7 @@ namespace GameReviewApp.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

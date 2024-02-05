@@ -3,6 +3,7 @@ using GameReviewApp.Dto;
 using GameReviewApp.Interfaces;
 using GameReviewApp.Models;
 using GameReviewApp.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,7 @@ namespace GameReviewApp.Controllers
             return Ok(review);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateReview([FromQuery] int gameId, [FromQuery] int reviewerId,[FromBody] ReviewDto reviewCreate)
@@ -69,7 +70,7 @@ namespace GameReviewApp.Controllers
             return Ok("Review successfully created.");
         }
 
-        [HttpPut("{reviewId}")]
+        [HttpPut("{reviewId}"), Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -98,7 +99,7 @@ namespace GameReviewApp.Controllers
             return Ok("Review successfully updated.");
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
